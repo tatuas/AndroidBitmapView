@@ -1,6 +1,6 @@
 package com.tatuas.android.bitmapview.sample;
 
-import com.tatuas.android.bitmapview.R;
+import com.tatuas.android.bitmapview.sample.R;
 
 import android.os.Bundle;
 import android.app.Activity;

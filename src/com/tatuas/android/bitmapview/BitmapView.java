@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -89,7 +88,6 @@ public class BitmapView extends ImageView {
             }
         }
 
-        Log.e("calculate", String.valueOf(inSampleSize));
         return inSampleSize;
     }
 
