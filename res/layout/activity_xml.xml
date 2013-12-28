@@ -23,7 +23,7 @@
             xmlns:bitmapView="http://tatuas.com/android/BitmapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bitmapView:pictureFilePath="/storage/emulated/0/20131223064159.jpg" />
+            bitmapView:pictureFilePath="/storage/emulated/0/test.jpg" />
     </LinearLayout>
 
     <Button
