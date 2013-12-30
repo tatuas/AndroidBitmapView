@@ -17,6 +17,10 @@ public class BitmapView extends ImageView {
     private File file;
     private String path;
 
+    public BitmapView(Context context) {
+        super(context);
+    }
+
     public BitmapView(Context context, String path) {
         super(context);
         this.path = path;
@@ -52,7 +56,7 @@ public class BitmapView extends ImageView {
         setImageFromFile(file, getWidth(), getHeight());
     }
 
-    private void setImageFromFile(File file, int widthDp, int heightDp) {
+    public void setImageFromFile(File file, int widthDp, int heightDp) {
         if (file == null) {
             return;
         }
