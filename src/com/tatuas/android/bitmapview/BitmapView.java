@@ -43,8 +43,7 @@ public class BitmapView extends ImageView {
 
     private void createFile(String path) {
         if (path != null) {
-            File f = new File(path);
-            file = f;
+            file = new File(path);
         }
     }
 
@@ -113,19 +112,19 @@ public class BitmapView extends ImageView {
     }
 
     public int convertPxToDp(int value) {
-        DisplayMetrics dm = new DisplayMetrics();
-        WindowManager wm = (WindowManager) getContext().getSystemService(
-                Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(dm);
-        return (int) (value / dm.density);
+        return (int) (value / getDisplayMetrics().density);
     }
 
     public int convertDpToPx(int value) {
+        return (int) (value * getDisplayMetrics().density);
+    }
+
+    private DisplayMetrics getDisplayMetrics() {
         DisplayMetrics dm = new DisplayMetrics();
         WindowManager wm = (WindowManager) getContext().getSystemService(
                 Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(dm);
-        return (int) (value * dm.density);
+        return dm;
     }
 
     @Override
