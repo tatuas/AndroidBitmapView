@@ -12,10 +12,9 @@ import android.widget.ImageView;
 
 public class BitmapView extends ImageView {
     private Bitmap bitmap;
+    private File file;
     private Bitmap.Config config = Bitmap.Config.ARGB_8888;
     private final String NAMESPACE = "http://tatuas.com/android/BitmapView";
-    private File file;
-    private String path;
 
     public BitmapView(Context context) {
         super(context);
@@ -23,21 +22,22 @@ public class BitmapView extends ImageView {
 
     public BitmapView(Context context, String path) {
         super(context);
-        this.path = path;
         createFile(path);
     }
 
     public BitmapView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        createFile(attrs.getAttributeValue(NAMESPACE, "pictureFilePath"));
+        String path = attrs.getAttributeValue(NAMESPACE, "pictureFilePath");
+        createFile(path);
     }
 
     public BitmapView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        createFile(attrs.getAttributeValue(NAMESPACE, "pictureFilePath"));
+        String path = attrs.getAttributeValue(NAMESPACE, "pictureFilePath");
+        createFile(path);
     }
 
-    public void setImageQuality(Bitmap.Config config) {
+    public void setImageConfig(Bitmap.Config config) {
         this.config = config;
     }
 
@@ -47,15 +47,21 @@ public class BitmapView extends ImageView {
         }
     }
 
-    public void updateImageFromFile(String path) {
-        setImageBitmap(null);
-        refreshDrawableState();
-        bitmap.recycle();
-        createFile(path);
-        setImageFromFile(file, getWidth(), getHeight());
+    public void setImageFromFilePath(String path) {
+        setImage(path, getWidth(), getHeight());
     }
 
-    public void setImageFromFile(File file, int widthDp, int heightDp) {
+    public void setImageFromFilePath(String path, int imageWidthDp,
+            int imageHeightDp) {
+        setImage(path, imageWidthDp, imageHeightDp);
+    }
+
+    private void setImage(String path, int widthDp, int heightDp) {
+        setImageBitmap(null);
+        refreshDrawableState();
+
+        createFile(path);
+
         if (file == null) {
             return;
         }
@@ -64,21 +70,18 @@ public class BitmapView extends ImageView {
             return;
         }
 
-        String path = file.getAbsolutePath();
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
-        BitmapFactory.decodeFile(path, options);
+        BitmapFactory.decodeFile(file.getAbsolutePath(), options);
         options.inSampleSize = calculateInSampleSize(options, widthDp, heightDp);
         options.inJustDecodeBounds = false;
         options.inPreferredConfig = config;
 
         bitmap = BitmapFactory.decodeFile(path, options);
-
         setImageBitmap(bitmap);
-
         refreshDrawableState();
+
     }
 
     public Bitmap getBitmap() {
@@ -86,10 +89,10 @@ public class BitmapView extends ImageView {
     }
 
     public String getPicturePath() {
-        return this.path;
+        return file.getAbsolutePath();
     }
 
-    public int calculateInSampleSize(BitmapFactory.Options options,
+    private int calculateInSampleSize(BitmapFactory.Options options,
             int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -130,8 +133,10 @@ public class BitmapView extends ImageView {
     @Override
     protected void onDetachedFromWindow() {
         setImageDrawable(null);
-        if (!bitmap.isRecycled()) {
-            bitmap.recycle();
+        if (bitmap != null) {
+            if (!bitmap.isRecycled()) {
+                bitmap.recycle();
+            }
         }
         super.onDetachedFromWindow();
     }
@@ -141,9 +146,10 @@ public class BitmapView extends ImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (file != null) {
             if (getWidth() > 0 && getHeight() > 0) {
-                setImageFromFile(file, getWidth(), getHeight());
+                setImage(file.getAbsolutePath(), getWidth(), getHeight());
                 file = null;
             }
         }
+        // setMeasuredDimension(getWidth(), getHeight());
     }
 }

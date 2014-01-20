@@ -21,7 +21,7 @@ public class FromJavaActivity extends Activity {
         setContentView(R.layout.activity_java);
 
         bitmapView = new BitmapView(this, "/storage/emulated/0/test.jpg");
-        bitmapView.setImageQuality(Bitmap.Config.RGB_565);
+        bitmapView.setImageConfig(Bitmap.Config.RGB_565);
 
         LinearLayout l = (LinearLayout) findViewById(R.id.imgLayout);
         l.addView(bitmapView, new LinearLayout.LayoutParams(
@@ -32,7 +32,7 @@ public class FromJavaActivity extends Activity {
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                bitmapView.updateImageFromFile("/storage/emulated/0/test2.jpg");
+                bitmapView.setImageFromFilePath("/storage/emulated/0/test2.jpg");
             }
         });
     }
