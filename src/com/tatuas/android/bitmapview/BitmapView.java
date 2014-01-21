@@ -89,7 +89,11 @@ public class BitmapView extends ImageView {
     }
 
     public String getPicturePath() {
-        return file.getAbsolutePath();
+        if (file != null) {
+            return file.getAbsolutePath();
+        } else {
+            return null;
+        }
     }
 
     private int calculateInSampleSize(BitmapFactory.Options options,
